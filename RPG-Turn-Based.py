@@ -5,15 +5,20 @@
 """
 
 class Creature():
-    def __init__(self, hp, mp):
+    def __init__(self, name, hp, mp):
+        self.name = name
         self.hp = hp
         self.mp = mp
         self.hp_max = hp
         self.mp_max = mp
-        
-    def print_status(self):
-        print(f"Life: {self.hp:^4}\n"
-              f"Mana: {self.mp:^4}")
+    
+    def __str__(self):
+        return f"Creature: {self.name}"
+    
+    def status(self):
+        print(f"{self.name}\n"
+              f"Life: {self.hp:^4}\n"
+              f"Mana: {self.mp:^4}\n")
         
     def lose_hp(self, hp_lost):
         if self.hp > hp_lost:
@@ -31,13 +36,8 @@ class Creature():
         return self.hp > 0
     
 class Hero(Creature):
-    def __init__(self, hp, mp):
-        super().__init__(hp, mp)
-    
-    def status(self):
-        print("Player")
-        super().print_status()
-        print()
+    def __init__(self, name, hp, mp):
+        super().__init__(name, hp, mp)
         
     def action(self, target):
         
@@ -58,34 +58,29 @@ class Hero(Creature):
         
     def attack(self, target):
         hit = 6
-        print(f"Hero attack | {hit} of damage\n")
+        print(f"{self.name} attack | {hit} of damage\n")
         target.lose_hp(hit)
     
     def __use_potion(self):
         cure = 2
         self.hp += cure 
-        print(f"Hero heal | {cure} of hp\n")
+        print(f"{self.name} heal | {cure} of hp\n")
         
 class Enemy(Creature):
-    def __init__(self, hp, mp):
-        super().__init__(hp, mp)
-        
-    def status(self):
-        print("Enemy")
-        super().print_status()
-        print()
+    def __init__(self, name, hp, mp):
+        super().__init__(name, hp, mp)
         
     def attack(self, target):
         hit = 3
-        print(f"Enemy attack | {hit} of damage\n")
+        print(f"{self.name} attack | {hit} of damage\n")
         target.lose_hp(hit)
 
 
 def main():
     
-    warrior = Hero(100, 20)
-    wolf = Enemy(40, 10)
-    
+    warrior = Hero("Warrior", 100, 20)
+    wolf = Enemy("Wolf", 40, 10)
+
     while warrior.is_alive() and wolf.is_alive():
         warrior.action(wolf)
         wolf.attack(warrior)
