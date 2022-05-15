@@ -109,7 +109,6 @@ class Hero(Creature):
             print(f"{self.name} miss the attack!\n")
         
         
-
     def __use_potion(self):
         cure = 5
         self.hp += cure
