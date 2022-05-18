@@ -21,8 +21,8 @@ class Creature():
 
     def status(self):
         print(f"{self.name}\n"
-              f"Life: {self.hp:^4}\n"
-              f"Mana: {self.mp:^4}\n")
+              f"Life: {self.hp:^4}({self.hp / self.hp_max * 100:.1f})%\n"
+              f"Mana: {self.mp:^4}({self.mp / self.mp_max * 100:.1f})%\n")
 
     def lose_hp(self, hp):
         if self.hp > hp:
@@ -62,8 +62,7 @@ class Hero(Creature):
     def action(self, target):
 
         act = input("""What you gonna do?
-        \n\tA - Basic Attack\n\tH - Potion\n\tS - Status of Battle\n\tP - pass turn\n\nYour move: 
-        """)
+        \n\tA - Basic Attack\n\tH - Potion\n\tS - Status of Battle\n\tP - pass turn\n\nYour move: """)
         
         os.system('cls||clear')
         
@@ -72,7 +71,7 @@ class Hero(Creature):
             
         elif act in "hH":
             if self.potion > 0:
-                print(f"You use 1 of yours {self.potion}")
+                print(f"You use 1 of yours {self.potion} potions!\n")
                 self.__use_potion()
                 
             else:
