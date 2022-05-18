@@ -71,7 +71,6 @@ class Hero(Creature):
             
         elif act in "hH":
             if self.potion > 0:
-                print(f"You use 1 of yours {self.potion} potions!\n")
                 self.__use_potion()
                 
             else:
@@ -107,11 +106,15 @@ class Hero(Creature):
         else:
             print(f"{self.name} miss the attack!\n")
         
-        
     def __use_potion(self):
         cure = 5
-        self.hp += cure
-        self.potion -= 1
+        if self.hp + cure >= self.hp_max:
+            pass
+        else:
+            self.hp += cure
+            self.potion -= 1
+        print(f"You use 1 of yours {self.potion} potions!\n")
+        print(f"{self.name} heal | {cure} of hp\n")
         print(f"{self.name} heal | {cure} of hp\n")
 
 
