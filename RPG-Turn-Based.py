@@ -6,6 +6,16 @@ import os
 import time
 import random
 
+#collors
+RED   = "\033[1;31m"
+YELLOW = "\033[1;33m" 
+BLUE  = "\033[1;34m"
+GREEN = "\033[0;32m"
+
+RESET = "\033[0;0m"
+BOLD    = "\033[;1m"
+REVERSE = "\033[;7m"
+
 class Creature():
     def __init__(self, name, hp, mp):
         self.name = name
@@ -20,9 +30,35 @@ class Creature():
         return f"Creature: {self.name}"
 
     def status(self):
-        print(f"{self.name}\n"
-              f"Life: {self.hp:^4}({self.hp / self.hp_max * 100:.1f})%\n"
-              f"Mana: {self.mp:^4}({self.mp / self.mp_max * 100:.1f})%\n")
+        
+        char_status = self.name;
+        
+        n_of_hearts = int((self.hp / self.hp_max) * 10)
+        n_of_mana_bar = int((self.mp / self.mp_max) * 10)
+        
+        if n_of_hearts >= 7:
+            color = GREEN
+        elif n_of_hearts >= 4:
+            color = YELLOW
+        else:
+            color = RED
+            
+        life = "\nLife: "
+        for i in range(n_of_hearts):
+            life = life + color + "O" 
+        
+        if n_of_hearts == 0 and self.is_alive():
+            life = life + color + "O"
+            n_of_hearts = 1
+        
+        emphy_spaces = 10 - n_of_hearts
+        life += " " * emphy_spaces
+        life += f" {self.hp}/{self.hp_max}" + RESET + "\n"
+        char_status += life
+        mana = f"Mana: " + BLUE + "O" * n_of_mana_bar + f" {self.mp}/{self.mp_max}" + RESET + "\n"
+        char_status += mana
+        
+        print(char_status)
 
     def lose_hp(self, hp):
         if self.hp > hp:
@@ -115,14 +151,13 @@ class Hero(Creature):
             self.potion -= 1
         print(f"You use 1 of yours {self.potion} potions!\n")
         print(f"{self.name} heal | {cure} of hp\n")
-        print(f"{self.name} heal | {cure} of hp\n")
 
 
 class Enemy(Creature):
     def __init__(self, name, hp, mp):
         super().__init__(name, hp, mp)
-        self.atk_max = 5
-        self.atk_min = 0
+        self.atk_max = 12
+        self.atk_min = 4
 
     def attack(self, target):
         
@@ -157,11 +192,16 @@ def main():
         warrior.action(wolf)
         wolf.attack(warrior)
         time.sleep(0.5)
+        warrior.status()
+        wolf.status()
         
-    warrior.status()
-    wolf.status()
 
-    print("Player Wins!") if warrior.is_alive() else print("Player Losed!")
-
+    if warrior.is_alive():
+        print("PLAYER WINS!")
+    elif wolf.is_alive():
+        print("PLAYER LOSE!")
+    else:
+        print("DRAW")
+        
 if __name__ == '__main__':
     main()
