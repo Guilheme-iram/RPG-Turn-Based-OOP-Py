@@ -156,8 +156,8 @@ class Hero(Creature):
 class Enemy(Creature):
     def __init__(self, name, hp, mp):
         super().__init__(name, hp, mp)
-        self.atk_max = 12
-        self.atk_min = 4
+        self.atk_max = 10
+        self.atk_min = 0
 
     def attack(self, target):
         
@@ -197,11 +197,19 @@ def main():
         
 
     if warrior.is_alive():
-        print("PLAYER WINS!")
+        print("PLAYER WINS!\n")
     elif wolf.is_alive():
-        print("PLAYER LOSE!")
+        print("PLAYER LOSE!\n")
     else:
-        print("DRAW")
+        print("DRAW\n")
+        
+    again = input("Wanna play again? [Y/ N] ")[0].strip()
+    if again in "Yy":
+        os.system('cls||clear')
+        main()
+    else:
+        print("\nEnd of the game!\n")
+    
         
 if __name__ == '__main__':
     main()
